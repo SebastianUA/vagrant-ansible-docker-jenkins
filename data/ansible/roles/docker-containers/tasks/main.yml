@@ -1,0 +1,28 @@
+---
+# tasks file for docker-containers
+#
+- name: build the nginx image
+  become: yes
+  command: cd /home/vagrant/docker-containers/nginx && docker build -t nginx:latest .
+#
+- name: build the php-fpm image
+  become: yes
+  command: cd /home/vagrant/docker-containers/php-fpm && docker build -t php:latest .
+#
+- name: build the mariadb image
+  become: yes
+  command: cd /home/vagrant/docker-containers/mariadb && docker build -t mariadb:latest .
+#
+- name: Start LEMP images
+  become: yes
+  command: docker-compose -f /home/vagrant/docker-containers/docker-compose.yml up -d    
+  #command: cd /home/vagrant/docker-containers && docker-compose up -d docker-compose.yml
+
+#- name: run docker container with nginx
+#  become: yes
+#  docker:
+#    name: nginx
+#    image: "nginx:latest"
+#    state: reloaded
+#    publish_all_ports: yes
+

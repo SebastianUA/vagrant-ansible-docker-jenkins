@@ -1,0 +1,13 @@
+---
+- hosts: vagrant-ansible #all
+  remote_user: vagrant
+  vars:
+    - password : gu2KmqcJp0Yyo
+    - user : guest
+  roles:
+    - { role: jenkins-installation }   
+    - { role: docker-installation }  
+    - { role: docker-containers } 
+    #- { role: 'xcode', when: ansible_os_family == 'Darwin' }  
+#  tasks:
+

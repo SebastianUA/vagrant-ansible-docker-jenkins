@@ -1,0 +1,53 @@
+---
+# tasks file for install-utilites
+- name: install vim
+  yum: name=vim state=latest
+
+- name: install needed packages 
+  yum: name={{ item }} state=installed
+  with_items:
+    - git
+    - mosh
+    - htop  
+    - python  
+    - python-pip  
+    - python34  
+    - mlocate  
+    - screen
+    - iotop
+    - man
+    - wget
+    - nmap  
+    - java
+    - telnet 
+#
+- name: clone repo and install grc
+  sudo: yes
+  shell: "cd /usr/local/src && git clone https://github.com/garabik/grc.git && cd /usr/local/src/grc/ && bash ./install.sh"
+  #become_user: root
+#        
+- name: install the 'Development tools' package group
+  yum: name="@Development tools" state=present
+#     
+- name: add bashrc to vagrant user
+  copy: src=../data/bashrc dest=/home/vagrant/.bashrc owner=vagrant group=vagrant mode=0644
+#
+- name: add ansible folder with all files to homes's vagrant directoty into vagrant-ansible machine
+  copy: src=../data/ansible dest=/home/vagrant owner=vagrant group=vagrant mode=0644 directory_mode=0775 backup=yes
+#
+- name: add (copy) docker-containers to vagrant home folder, backing up the original if it differs from the copied version 
+  copy: src=../data/docker-containers dest=/home/vagrant owner=vagrant group=vagrant mode=0644 directory_mode=0775 backup=yes    
+#
+- name: copy jenkins files
+  copy: src=../data/jenkins dest=/home/vagrant owner=vagrant group=vagrant mode=0644 directory_mode=0775 backup=yes
+
+# Add nopasswd for wheel group
+- lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+# Add nopassword for root
+- lineinfile: "dest=/etc/sudoers state=present regexp='^root' line='root ALL=(ALL) NOPASSWD: ALL'"
+#
+- lineinfile: "dest=/etc/sudoers state=present insertafter='^root ALL=(ALL)*' line='vagrant ALL=(ALL) NOPASSWD: ALL'"
+#
+- lineinfile: "dest=/etc/sudoers state=present insertafter='^root ALL=(ALL)*' line='ansible ALL=(ALL) NOPASSWD: ALL'"
+#
+

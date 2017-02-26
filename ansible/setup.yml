@@ -1,0 +1,11 @@
+---
+- hosts: local
+  remote_user: vagrant
+  vars:
+    - password : gu2KmqcJp0Yyo
+    - user : guest
+  roles:
+    - { role: install-utilites }
+    - { role: local-tasks }
+    #- { role: 'xcode', when: ansible_os_family == 'Darwin' } 
+   

@@ -1,0 +1,10 @@
+---
+- name: create logs directory
+  file: path=/root/ansible/logs state=directory mode=0775
+
+- name: run ansible into vagrant-ansible machine
+  #become_user: root
+  #sudo: yes
+  shell: "cd /home/vagrant/ansible/ && sudo ansible-playbook -i /home/vagrant/ansible/inventory /home/vagrant/ansible/setup.yml -vvv"
+
+      

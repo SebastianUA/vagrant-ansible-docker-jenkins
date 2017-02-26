@@ -1,0 +1,48 @@
+---
+# tasks file for jenkins-installation
+#
+- name: add jenkins repository into vagrant machine
+  sudo: yes
+  yum_repository:
+    name: jenkins
+    description: jenkins repo
+    baseurl: http://pkg.jenkins.io/redhat
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+#
+- name: install jenkins into vagrant machine
+  sudo: yes
+  yum: name=jenkins state=latest
+#
+#systemctl list-unit-files| grep docker
+- name: enable sysv jenkins service
+  sudo: yes
+  service: name=jenkins enabled=yes
+
+- name: (re)start jenkins
+  sudo: yes
+  service: name=jenkins state=restarted    
+
+#- name: copy captain user, password - captain 
+   #copy: src=/home/vagrant/users/captain dest=/var/lib/jenkins/users/ owner=jenkins group=jenkins mode=0644
+
+   ## fix "ERROR: anonymous is missing the Overall/Read permission"      
+   #- lineinfile: 
+   #    path: /var/lib/jenkins/config.xml 
+   #    #dest:    
+   #    state: present 
+   #    regexp: "<useSecurity>true</useSecurity>" 
+   #    line: "<useSecurity>false</useSecurity>" 
+   #    become: yes
+   #    #sudo: yes
+
+# install plugins for jenkins
+ 
+
+- name: (re)start jenkins
+  sudo: yes
+  service: name=jenkins state=restarted   
+#
+
