@@ -2,7 +2,7 @@
 # tasks file for jenkins-installation
 #
 - name: add jenkins repository into vagrant machine
-  sudo: yes
+  become: yes
   yum_repository:
     name: jenkins
     description: jenkins repo
@@ -13,36 +13,38 @@
 
 #
 - name: install jenkins into vagrant machine
-  sudo: yes
+  become: yes
   yum: name=jenkins state=latest
 #
 #systemctl list-unit-files| grep docker
 - name: enable sysv jenkins service
-  sudo: yes
+  become: yes
   service: name=jenkins enabled=yes
 
 - name: (re)start jenkins
-  sudo: yes
+  become: yes
   service: name=jenkins state=restarted    
 
-#- name: copy captain user, password - captain 
-   #copy: src=/home/vagrant/users/captain dest=/var/lib/jenkins/users/ owner=jenkins group=jenkins mode=0644
+- name: copy captain user, password - captain 
+  become: yes
+  copy: src=/home/vagrant/jenkins/users/captain dest=/var/lib/jenkins/users/ owner=jenkins group=jenkins mode=0644
 
-   ## fix "ERROR: anonymous is missing the Overall/Read permission"      
-   #- lineinfile: 
-   #    path: /var/lib/jenkins/config.xml 
-   #    #dest:    
-   #    state: present 
-   #    regexp: "<useSecurity>true</useSecurity>" 
-   #    line: "<useSecurity>false</useSecurity>" 
-   #    become: yes
-   #    #sudo: yes
+- name: fix "ERROR: anonymous is missing the Overall/Read permission"
+  become: yes
+  lineinfile:
+    dest: /var/lib/jenkins/config.xml
+    state: present
+    regexp: '<useSecurity>true</useSecurity>'
+    line: '<useSecurity>false</useSecurity>'
 
+#fix ERROR anonymous is missing the Overall/Read permission 
+#- lineinfile: "dest=/var/lib/jenkins/config.xml state=present regexp='<useSecurity>true</useSecurity>' line='<useSecurity>false</useSecurity>'"
+ 
 # install plugins for jenkins
  
 
 - name: (re)start jenkins
-  sudo: yes
+  become: yes
   service: name=jenkins state=restarted   
 #
 
