@@ -22,7 +22,8 @@
     - telnet 
 #
 - name: clone repo and install grc
-  sudo: yes
+  become: yes  
+  #sudo: yes
   shell: "cd /usr/local/src && git clone https://github.com/garabik/grc.git && cd /usr/local/src/grc/ && bash ./install.sh"
   #become_user: root
 #        

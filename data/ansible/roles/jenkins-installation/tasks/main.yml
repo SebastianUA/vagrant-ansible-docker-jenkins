@@ -29,13 +29,13 @@
   become: yes
   copy: src=/home/vagrant/jenkins/users/captain dest=/var/lib/jenkins/users/ owner=jenkins group=jenkins mode=0644
 
-- name: fix "ERROR: anonymous is missing the Overall/Read permission"
+- name: fix ERROR 'anonymous is missing the Overall/Read permission'
   become: yes
   lineinfile:
     dest: /var/lib/jenkins/config.xml
     state: present
-    regexp: '<useSecurity>true</useSecurity>'
-    line: '<useSecurity>false</useSecurity>'
+    regexp: <useSecurity>true</useSecurity>
+    line:   <useSecurity>false</useSecurity> 
 
 #fix ERROR anonymous is missing the Overall/Read permission 
 #- lineinfile: "dest=/var/lib/jenkins/config.xml state=present regexp='<useSecurity>true</useSecurity>' line='<useSecurity>false</useSecurity>'"

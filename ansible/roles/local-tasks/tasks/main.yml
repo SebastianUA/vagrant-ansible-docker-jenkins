@@ -4,7 +4,8 @@
 
 - name: run ansible into vagrant-ansible machine
   #become_user: root
-  #sudo: yes
+  #become: yes
+  #local_action: command cd /home/vagrant/ansible/ && sudo ansible-playbook -i /home/vagrant/ansible/inventory /home/vagrant/ansible/setup.yml -vvv
   shell: "cd /home/vagrant/ansible/ && sudo ansible-playbook -i /home/vagrant/ansible/inventory /home/vagrant/ansible/setup.yml -vvv"
 
       

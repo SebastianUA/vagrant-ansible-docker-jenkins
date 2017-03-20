@@ -5,15 +5,15 @@
 #   - restart docker
         
 - name: install docker-py
-  sudo: yes
+  become: yes
   pip: name=docker-py==1.9.0 #state=latest
 #
 - name: install docker-compose
-  sudo: yes
+  become: yes  
   pip: name=docker-compose==1.7.0 #state=latest
 #      
 - name: add docker-engine repository into vagrant machine
-  sudo: yes
+  become: yes
   yum_repository:
     name: docker-engine
     description: docker engine repo
@@ -23,17 +23,17 @@
     gpgkey: https://yum.dockerproject.org/gpg
 #
 - name: install docker-engine
-  sudo: yes
+  become: yes
   yum: name=docker-engine state=latest
   notify:
     - restart docker
 #
 #systemctl list-unit-files| grep docker
 - name: enable sysv docker service
-  sudo: yes
+  become: yes
   service: name=docker enabled=yes
 
-  #- name: (re)start docker
-  #  sudo: yes
-  #  service: name=docker state=restarted
+- name: (re)start docker
+  become: yes
+  service: name=docker state=restarted
 
