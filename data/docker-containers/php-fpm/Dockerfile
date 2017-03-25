@@ -61,4 +61,7 @@ RUN usermod -u 1000 www-data
 
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-CMD ["php-fpm"]
+EXPOSE 9000
+
+CMD ["php-fpm", "--nodaemonize"]
+#CMD ["php-fpm", "-F"]

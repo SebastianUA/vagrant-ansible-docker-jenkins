@@ -1,6 +1,10 @@
 ---
-- name: create logs directory
+- name: create logs directory for root user
   file: path=/root/ansible/logs state=directory mode=0775
+
+- name: create logs directory for vagrant user      
+  file: path=/home/vagrant/ansible/logs state=directory mode=0775
+
 
 - name: run ansible into vagrant-ansible machine
   #become_user: root
